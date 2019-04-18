@@ -69,5 +69,19 @@ const initProvincet = (echarts,provinceMaps,hljJson)=>{
         }
     };
     provinceMaps.setOption(provinceMapOpt);
+    window.addEventListener("resize", ()=>{
+        console.log("你监听到了嘛？map")       
+        provinceMaps.resize();
+    });
+    let city;
+    provinceMaps.on('click', function(params){
+        city = params.name;
+        console.log(params.name);//此处写点击事件内容
+        return city;
+        // that.$route.push({path: '/province/detailCity'})
+    });//点击
+    console.log("cahunchulai1:",city);
+    
+   
 }
 export default  initProvincet;

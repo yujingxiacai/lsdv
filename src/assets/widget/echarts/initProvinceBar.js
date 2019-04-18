@@ -1,13 +1,17 @@
-const initProvinceBar=(echarts, provinceBars, allCityList,allRate,allDevelopment)=>{
-    console.log("hanshunei",allCityList);
-    provinceBars = echarts.init(document.getElementById("provinceBar"));
-    // console.log(this.allCityList);
-    console.log('这是inint中');
-  
+const initProvinceBar=(echarts, andex ,provinceBars, allCityList, allRate=[], yAxisDta=[],texttitle='2017年黑龙江省各地市信息化发展指数', yname1='发展指数', yname2='增长率',)=>{
+    // console.log(allCityList,yAxisDta,allRate);
+    let yname =  new Object;
+    if(allRate[0] === undefined){
+        allRate = ['','','','','','','','','','','','','',];
+        yname = {}	
+    }else{
+        yname = {name: yname2,
+            type : 'value'}
+    }
+    provinceBars = echarts.init(document.getElementById(`provinceBar${andex}`));
     const provinceBarOpt = {
           title : {
-            text: '2017年黑龙江省各地市信息化发展指数',
-            // subtext: '测试版本',
+            text: texttitle,
             textStyle:{
                 color: '#cceeff',
             }
@@ -89,19 +93,21 @@ const initProvinceBar=(echarts, provinceBars, allCityList,allRate,allDevelopment
             }
         ],
         yAxis : [
-            {
+            {   name: yname1,
                 type : 'value'
-            }
+            },
+            yname
         ],
         series : [{
-            name:'增长率',
+            name: yname2,
             data: allRate,
-            type: 'line'
+            yAxisIndex: 1,
+            type: 'line',
         },				
         {
-            name:'发展指数',
+            name: yname1,
             type:'bar',
-            data: allDevelopment,
+            data: yAxisDta,
             itemStyle: {
                 normal: {
                     color: function(params) {
@@ -125,11 +131,10 @@ const initProvinceBar=(echarts, provinceBars, allCityList,allRate,allDevelopment
             }
         ]
     }
-// this.provinceBars.clear(); 
     provinceBars.setOption(provinceBarOpt);
-    window.onresize(()=>{
-            provinceBars.resize();
-        
-    })
+    window.addEventListener("resize", ()=>{
+        provinceBars.resize();
+    });
+    return provinceBars;
 }
 export default  initProvinceBar;
